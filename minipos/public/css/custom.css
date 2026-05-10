@@ -1,0 +1,44 @@
+/* Custom styles for Mini POS */
+:root {
+  --jp-primary: #2457d6;
+  --jp-ink: #14213d;
+  --jp-muted: #667085;
+  --jp-soft: #f5f7fb;
+  --jp-border: #e6eaf2;
+}
+
+.toast-container {
+  position: fixed;
+  bottom: 20px;      
+  right: 20px;  
+  z-index: 1000;     
+  display: flex;
+  flex-direction: column;
+  gap: 10px;         
+}
+
+body {
+  padding-top: 56px; /* Offset for fixed navbar */
+}
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+.card {
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+.table-responsive {
+  margin-bottom: 1.5rem;
+}
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
