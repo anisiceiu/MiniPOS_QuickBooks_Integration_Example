@@ -1,0 +1,6 @@
+@MiniPOSApi_HostAddress = http://localhost:5099
+
+GET {{MiniPOSApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

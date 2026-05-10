@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="MiniPOS.Application/MiniPOS.Application.csproj" />
+  <Project Path="MiniPOS.Domain/MiniPOS.Domain.csproj" />
+  <Project Path="MiniPOS.Infrastructure/MiniPOS.Infrastructure.csproj" />
+  <Project Path="MiniPOSApi/MiniPOSApi.csproj" />
+</Solution>
