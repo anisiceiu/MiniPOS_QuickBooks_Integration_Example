@@ -16,22 +16,25 @@ namespace MiniPOS.Infrastructure.QuickBooks
         private readonly QuickBooksHttpClient _client;
         private readonly QuickBooksOptions _options;
         private readonly ITokenRepository _tokenRepo;
+        private readonly IQuickBooksAuthService _authService;
 
         public QuickBooksService(
             QuickBooksHttpClient client,
             IOptions<QuickBooksOptions> options,
-            ITokenRepository tokenRepo)
+            ITokenRepository tokenRepo,
+            IQuickBooksAuthService authService)
         {
             _client = client;
             _options = options.Value;
             _tokenRepo = tokenRepo;
+            _authService = authService;
         }
 
         public async Task<string> CreateInvoiceAsync(Sale sales)
         {
             var token = await _tokenRepo.GetLatestTokenAsync();
 
-            if (token.IsExpired)
+            if (token.AccessTokenExpiresAt <= DateTime.UtcNow)
             {
                 // refresh automatically
                 token = await RefreshToken(token);
@@ -67,10 +70,37 @@ namespace MiniPOS.Infrastructure.QuickBooks
             };
         }
 
-        private async Task<TokenEntity> RefreshToken(TokenEntity token)
+        private async Task<QuickBooksToken> RefreshToken(QuickBooksToken token)
         {
-            // call auth service here (or inject it)
-            throw new NotImplementedException();
+            if (token == null)
+                throw new Exception("QuickBooks token not found.");
+
+            if (string.IsNullOrWhiteSpace(token.RefreshToken))
+                throw new Exception("QuickBooks refresh token is missing.");
+
+            // Request new token from QuickBooks
+            var refreshedToken =
+                await _authService.RefreshTokenAsync(token.RefreshToken);
+
+            if (refreshedToken == null)
+                throw new Exception("Failed to refresh QuickBooks token.");
+
+            // Update existing token entity
+            token.AccessToken = refreshedToken.AccessToken;
+
+            // QuickBooks may rotate refresh token
+            if (!string.IsNullOrWhiteSpace(refreshedToken.RefreshToken))
+            {
+                token.RefreshToken = refreshedToken.RefreshToken;
+            }
+
+            token.AccessTokenExpiresAt =
+                DateTime.UtcNow.AddSeconds(refreshedToken.ExpiresIn);
+
+            // Save updated token in DB
+            await _tokenRepo.UpdateAsync(token);
+
+            return token;
         }
     }
 }

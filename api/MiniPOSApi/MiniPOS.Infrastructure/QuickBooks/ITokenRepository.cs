@@ -1,4 +1,5 @@
-﻿using MiniPOS.Infrastructure.QuickBooks.Models;
+﻿using MiniPOS.Domain.Entities;
+using MiniPOS.Infrastructure.QuickBooks.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace MiniPOS.Infrastructure.QuickBooks
 {
     public interface ITokenRepository
     {
-        Task<TokenEntity> GetLatestTokenAsync();
-        Task SaveAsync(TokenEntity token);
+        Task<QuickBooksToken> GetLatestTokenAsync();
+        Task SaveAsync(QuickBooksToken token);
+        Task UpdateAsync(QuickBooksToken token);
     }
 }

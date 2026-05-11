@@ -30,6 +30,7 @@ namespace MiniPOS.Infrastructure
 
             services.AddScoped<IQuickBooksAuthService, QuickBooksAuthService>();
             services.AddScoped<IQuickBooksService, QuickBooksService>();
+            services.AddScoped<ITokenRepository, TokenRepository>();
 
             return services;
         }
