@@ -29,7 +29,8 @@ namespace MiniPOS.Domain.Entities
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
+        public string SyncStatus { get; set; } = "Pending";
+        public DateTime? LastSyncedAt { get; set; }
         // Navigation property
         public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
     }

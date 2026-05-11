@@ -1,19 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MiniPOS.Application.Interfaces;
+using MiniPOS.Application.QuickBooks;
 using MiniPOS.Domain.Entities;
-using MiniPOS.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiniPOS.Infrastructure.QuickBooks
+namespace MiniPOS.Application.QuickBooks
 {
     public class TokenRepository : ITokenRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
 
-        public TokenRepository(ApplicationDbContext context)
+        public TokenRepository(IApplicationDbContext context)
         {
             _context = context;
         }
@@ -43,5 +44,7 @@ namespace MiniPOS.Infrastructure.QuickBooks
 
             await _context.SaveChangesAsync();
         }
+
+
     }
 }

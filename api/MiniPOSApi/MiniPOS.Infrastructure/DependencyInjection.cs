@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MiniPOS.Application.Interfaces;
 using MiniPOS.Application.Interfaces.Services;
+using MiniPOS.Application.QuickBooks;
 using MiniPOS.Infrastructure.Persistence;
 using MiniPOS.Infrastructure.QuickBooks;
 
@@ -30,7 +31,7 @@ namespace MiniPOS.Infrastructure
 
             services.AddScoped<IQuickBooksAuthService, QuickBooksAuthService>();
             services.AddScoped<IQuickBooksService, QuickBooksService>();
-            services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<IQuickBooksCustomerService, QuickBooksCustomerService>();
 
             return services;
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MiniPOS.Application.Interfaces.Services;
+using MiniPOS.Application.QuickBooks;
 using MiniPOS.Domain.Entities;
 using MiniPOS.Infrastructure.QuickBooks.Models;
 using Newtonsoft.Json;
@@ -86,16 +87,16 @@ namespace MiniPOS.Infrastructure.QuickBooks
                 throw new Exception("Failed to refresh QuickBooks token.");
 
             // Update existing token entity
-            token.AccessToken = refreshedToken.AccessToken;
+            token.AccessToken = refreshedToken.access_token;
 
             // QuickBooks may rotate refresh token
-            if (!string.IsNullOrWhiteSpace(refreshedToken.RefreshToken))
+            if (!string.IsNullOrWhiteSpace(refreshedToken.refresh_token))
             {
-                token.RefreshToken = refreshedToken.RefreshToken;
+                token.RefreshToken = refreshedToken.refresh_token;
             }
 
             token.AccessTokenExpiresAt =
-                DateTime.UtcNow.AddSeconds(refreshedToken.ExpiresIn);
+                DateTime.UtcNow.AddSeconds(refreshedToken.expires_in);
 
             // Save updated token in DB
             await _tokenRepo.UpdateAsync(token);

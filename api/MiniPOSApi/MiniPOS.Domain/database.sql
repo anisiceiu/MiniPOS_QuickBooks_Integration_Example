@@ -133,3 +133,7 @@ CREATE TABLE QuickBooksTokens
 )
 
 
+ALTER TABLE Customers
+ADD
+    SyncStatus NVARCHAR(20) DEFAULT 'Pending',
+    LastSyncedAt DATETIME NULL;

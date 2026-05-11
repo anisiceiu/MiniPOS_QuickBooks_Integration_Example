@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using MiniPOS.Application.QuickBooks;
 using MiniPOS.Infrastructure.QuickBooks.Models;
 using Newtonsoft.Json;
 using System;
@@ -21,7 +22,26 @@ namespace MiniPOS.Infrastructure.QuickBooks
             _options = options.Value;
         }
 
-        public async Task<QuickBooksTokenResponse> ExchangeCodeAsync(string code)
+        //public async Task<QuickBooksTokenResponse> ExchangeCodeAsync(string code)
+        //{
+        //    return await RequestToken(new Dictionary<string, string>
+        //    {
+        //        ["grant_type"] = "authorization_code",
+        //        ["code"] = code,
+        //        ["redirect_uri"] = _options.RedirectUri
+        //    });
+        //}
+
+        //public async Task<QuickBooksTokenResponse> RefreshTokenAsync(string refreshToken)
+        //{
+        //    return await RequestToken(new Dictionary<string, string>
+        //    {
+        //        ["grant_type"] = "refresh_token",
+        //        ["refresh_token"] = refreshToken
+        //    });
+        //}
+
+         async Task<Application.DTOs.QuickBooksTokenResponse> IQuickBooksAuthService.ExchangeCodeAsync(string code)
         {
             return await RequestToken(new Dictionary<string, string>
             {
@@ -31,7 +51,7 @@ namespace MiniPOS.Infrastructure.QuickBooks
             });
         }
 
-        public async Task<QuickBooksTokenResponse> RefreshTokenAsync(string refreshToken)
+        async Task<Application.DTOs.QuickBooksTokenResponse> IQuickBooksAuthService.RefreshTokenAsync(string refreshToken)
         {
             return await RequestToken(new Dictionary<string, string>
             {
@@ -40,7 +60,7 @@ namespace MiniPOS.Infrastructure.QuickBooks
             });
         }
 
-        private async Task<QuickBooksTokenResponse> RequestToken(Dictionary<string, string> form)
+        private async Task<Application.DTOs.QuickBooksTokenResponse> RequestToken(Dictionary<string, string> form)
         {
             var authHeader = Convert.ToBase64String(
                 Encoding.UTF8.GetBytes($"{_options.ClientId}:{_options.ClientSecret}")
@@ -55,7 +75,7 @@ namespace MiniPOS.Infrastructure.QuickBooks
             );
 
             var json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<QuickBooksTokenResponse>(json);
+            return JsonConvert.DeserializeObject<Application.DTOs.QuickBooksTokenResponse>(json);
         }
     }
 }
