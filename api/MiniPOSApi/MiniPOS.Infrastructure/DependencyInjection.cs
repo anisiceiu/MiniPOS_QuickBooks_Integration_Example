@@ -1,8 +1,10 @@
-﻿using MiniPOS.Application.Interfaces;
-using MiniPOS.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MiniPOS.Application.Interfaces;
+using MiniPOS.Application.Interfaces.Services;
+using MiniPOS.Infrastructure.Persistence;
+using MiniPOS.Infrastructure.QuickBooks;
 
 namespace MiniPOS.Infrastructure
 {
@@ -18,6 +20,16 @@ namespace MiniPOS.Infrastructure
 
             services.AddScoped<IApplicationDbContext>(
                 provider => provider.GetRequiredService<ApplicationDbContext>());
+
+
+            services.Configure<QuickBooksOptions>(
+            configuration.GetSection("QuickBooks"));
+
+            services.AddHttpClient<QuickBooksAuthService>();
+            services.AddHttpClient<QuickBooksHttpClient>();
+
+            services.AddScoped<IQuickBooksAuthService, QuickBooksAuthService>();
+            services.AddScoped<IQuickBooksService, QuickBooksService>();
 
             return services;
         }

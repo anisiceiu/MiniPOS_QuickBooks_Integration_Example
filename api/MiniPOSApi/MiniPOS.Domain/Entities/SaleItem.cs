@@ -19,10 +19,27 @@ namespace MiniPOS.Domain.Entities
 
         public int ProductId { get; set; }
 
-        public int Quantity { get; set; }
+
+        [MaxLength(255)]
+        public string? Description { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal UnitPrice { get; set; }
+        public decimal? UnitPrice { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? Quantity { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal DiscountAmount { get; set; } = 0;
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal TaxAmount { get; set; } = 0;
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? LineTotal { get; set; }
+
+        [MaxLength(100)]
+        public string? QuickBooksLineId { get; set; }
 
         // Navigation properties
         [ForeignKey(nameof(SaleId))]
